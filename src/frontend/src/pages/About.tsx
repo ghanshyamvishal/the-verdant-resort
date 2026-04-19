@@ -15,7 +15,7 @@ const stats = [
 
 const team = [
   {
-    name: "Vikram Verdant",
+    name: "Vikram Divyam",
     role: "General Manager",
     bio: "With 20 years in luxury hospitality, Vikram leads with passion and precision.",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
@@ -120,7 +120,7 @@ export function About() {
       >
         <img
           src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920"
-          alt="The Verdant Resort"
+          alt="Divyam Resorts"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
         />
@@ -206,9 +206,9 @@ export function About() {
               className="font-body leading-relaxed"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              Founded in 1985 by the Verdant family, our resort began as a
-              vision to create a sanctuary where the boundaries between luxury
-              and nature dissolve. Nestled in 50 acres of pristine forest in the
+              Founded in 1985 by the Divyam family, our resort began as a vision
+              to create a sanctuary where the boundaries between luxury and
+              nature dissolve. Nestled in 50 acres of pristine forest in the
               Nilgiri Hills, we have spent four decades perfecting the art of
               hospitality.
             </p>
@@ -286,7 +286,7 @@ export function About() {
               style={{ color: "var(--color-text-secondary)" }}
             >
               The passionate individuals behind every unforgettable moment at
-              The Verdant Resort.
+              Divyam Resorts.
             </p>
           </div>
 
@@ -425,7 +425,7 @@ export function About() {
               >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                  style={{ backgroundColor: "rgba(212,168,83,0.12)" }}
+                  style={{ backgroundColor: "rgba(224,177,94,0.12)" }}
                 >
                   <Trophy
                     size={22}

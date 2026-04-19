@@ -72,7 +72,7 @@ const POLICIES = [
     id: "smoking",
     title: "Smoking Policy",
     content:
-      "The Verdant Resort is entirely non-smoking. Smoking is permitted only in designated outdoor areas. A deep-cleaning fee of ₹5,000 applies for smoking in rooms.",
+      "Divyam Resorts is entirely non-smoking. Smoking is permitted only in designated outdoor areas. A deep-cleaning fee of ₹5,000 applies for smoking in rooms.",
   },
 ];
 
@@ -250,7 +250,7 @@ export function RoomDetail() {
               <span
                 className="flex items-center gap-2 px-3 py-1.5 rounded-full font-body text-sm font-medium"
                 style={{
-                  backgroundColor: "rgba(44,95,46,0.08)",
+                  backgroundColor: "rgba(32,51,31,0.08)",
                   color: "var(--color-primary)",
                 }}
               >
@@ -260,7 +260,7 @@ export function RoomDetail() {
               <span
                 className="flex items-center gap-2 px-3 py-1.5 rounded-full font-body text-sm font-medium"
                 style={{
-                  backgroundColor: "rgba(44,95,46,0.08)",
+                  backgroundColor: "rgba(32,51,31,0.08)",
                   color: "var(--color-primary)",
                 }}
               >
@@ -270,7 +270,7 @@ export function RoomDetail() {
               <span
                 className="flex items-center gap-2 px-3 py-1.5 rounded-full font-body text-sm font-medium"
                 style={{
-                  backgroundColor: "rgba(44,95,46,0.08)",
+                  backgroundColor: "rgba(32,51,31,0.08)",
                   color: "var(--color-primary)",
                 }}
               >
@@ -527,7 +527,7 @@ export function RoomDetail() {
               {nights > 0 && (
                 <div
                   className="rounded-xl p-4 mb-4"
-                  style={{ backgroundColor: "rgba(44,95,46,0.06)" }}
+                  style={{ backgroundColor: "rgba(32,51,31,0.06)" }}
                   data-ocid="room_detail.price_summary"
                 >
                   <div className="flex justify-between items-center mb-2">
@@ -546,7 +546,7 @@ export function RoomDetail() {
                     </span>
                   </div>
                   <hr
-                    style={{ borderColor: "rgba(44,95,46,0.15)" }}
+                    style={{ borderColor: "rgba(32,51,31,0.15)" }}
                     className="my-2"
                   />
                   <div className="flex justify-between items-center">

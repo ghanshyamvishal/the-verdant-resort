@@ -70,7 +70,7 @@ function GallerySection() {
             style={{ color: "var(--color-text-secondary)" }}
           >
             A glimpse into the natural beauty and impeccable luxury that awaits
-            you at The Verdant Resort
+            you at Divyam Resorts
           </p>
         </div>
 

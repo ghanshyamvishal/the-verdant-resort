@@ -6,13 +6,13 @@
 
 @layer base {
   :root {
-    /* Brand Colors */
-    --color-primary: #2c5f2e;
-    --color-primary-light: #4a8c4d;
-    --color-primary-dark: #1a3d1c;
-    --color-secondary: #d4a853;
-    --color-secondary-light: #e8c97a;
-    --color-secondary-dark: #b8892e;
+    /* Brand Colors — Divyam Resorts */
+    --color-primary: #20331f;
+    --color-primary-light: #3a5c38;
+    --color-primary-dark: #13201300;
+    --color-secondary: #e0b15e;
+    --color-secondary-light: #ecca87;
+    --color-secondary-dark: #c4913a;
     --color-accent: #8b4513;
 
     /* Backgrounds */
@@ -66,9 +66,9 @@
     --card-foreground: 0.2 0.01 250;
     --popover: 0.98 0.01 80;
     --popover-foreground: 0.2 0.01 250;
-    --primary: 0.5 0.13 160;
+    --primary: 0.25 0.08 145;
     --primary-foreground: 0.98 0 0;
-    --secondary: 0.7 0.18 70;
+    --secondary: 0.75 0.18 70;
     --secondary-foreground: 0.15 0 0;
     --muted: 0.92 0.02 70;
     --muted-foreground: 0.55 0.01 250;
@@ -78,20 +78,20 @@
     --destructive-foreground: 0.98 0 0;
     --border: 0.9 0.01 70;
     --input: 0.95 0.01 70;
-    --ring: 0.5 0.13 160;
-    --chart-1: 0.5 0.13 160;
-    --chart-2: 0.7 0.18 70;
+    --ring: 0.25 0.08 145;
+    --chart-1: 0.25 0.08 145;
+    --chart-2: 0.75 0.18 70;
     --chart-3: 0.45 0.13 40;
     --chart-4: 0.65 0.12 140;
     --chart-5: 0.75 0.15 50;
     --sidebar: 0.15 0.01 250;
     --sidebar-foreground: 0.98 0 0;
-    --sidebar-primary: 0.7 0.18 70;
+    --sidebar-primary: 0.75 0.18 70;
     --sidebar-primary-foreground: 0.15 0.01 250;
-    --sidebar-accent: 0.5 0.13 160;
+    --sidebar-accent: 0.25 0.08 145;
     --sidebar-accent-foreground: 0.98 0 0;
     --sidebar-border: 0.25 0.01 250;
-    --sidebar-ring: 0.7 0.18 70;
+    --sidebar-ring: 0.75 0.18 70;
   }
 
   .dark {
@@ -101,7 +101,7 @@
     --card-foreground: 0.92 0.01 70;
     --popover: 0.2 0.01 250;
     --popover-foreground: 0.92 0.01 70;
-    --primary: 0.68 0.12 160;
+    --primary: 0.4 0.08 145;
     --primary-foreground: 0.12 0.01 250;
     --secondary: 0.75 0.18 70;
     --secondary-foreground: 0.12 0.01 250;
@@ -114,7 +114,7 @@
     --border: 0.28 0.01 250;
     --input: 0.22 0.01 250;
     --ring: 0.75 0.18 70;
-    --chart-1: 0.68 0.12 160;
+    --chart-1: 0.4 0.08 145;
     --chart-2: 0.75 0.18 70;
     --chart-3: 0.62 0.12 40;
     --chart-4: 0.72 0.12 150;
@@ -123,7 +123,7 @@
     --sidebar-foreground: 0.92 0.01 70;
     --sidebar-primary: 0.75 0.18 70;
     --sidebar-primary-foreground: 0.12 0.01 250;
-    --sidebar-accent: 0.68 0.12 160;
+    --sidebar-accent: 0.4 0.08 145;
     --sidebar-accent-foreground: 0.92 0.01 70;
     --sidebar-border: 0.25 0.01 250;
     --sidebar-ring: 0.75 0.18 70;
@@ -239,5 +239,20 @@
 
   .resort-date-input:focus {
     border-color: var(--color-primary) !important;
+  }
+
+  /* Hero Slider */
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .hero-slide-enter {
+    opacity: 1;
+  }
+
+  .hero-slide-exit {
+    opacity: 0;
   }
 }

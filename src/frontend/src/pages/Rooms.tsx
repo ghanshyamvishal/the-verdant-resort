@@ -79,7 +79,7 @@ export function Rooms() {
             className="font-accent text-sm tracking-widest uppercase mb-4"
             style={{ color: "var(--color-secondary)" }}
           >
-            The Verdant Resort
+            Divyam Resorts
           </p>
           <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-4 leading-tight">
             Our Rooms &amp; Suites
@@ -122,7 +122,7 @@ export function Rooms() {
                           backgroundColor: "var(--color-primary)",
                           color: "#ffffff",
                           borderColor: "var(--color-primary)",
-                          boxShadow: "0 4px 12px rgba(44,95,46,0.3)",
+                          boxShadow: "0 4px 12px rgba(32,51,31,0.3)",
                         }
                       : {
                           backgroundColor: "var(--color-bg-card)",
@@ -168,7 +168,7 @@ export function Rooms() {
             ))}
           </div>
 
-          {/* Empty state (shouldn't occur with current data, but safe guard) */}
+          {/* Empty state */}
           {filteredRooms.length === 0 && (
             <div
               data-ocid="rooms.empty_state"

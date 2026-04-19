@@ -66,7 +66,7 @@ export function AmenitiesSection() {
               style={{ color: "var(--color-text-secondary)" }}
             >
               From sunrise yoga on our mountain terrace to late-night stargazing
-              by the campfire, The Verdant Resort offers a curated collection of
+              by the campfire, Divyam Resorts offers a curated collection of
               world-class amenities designed to nourish your body, mind, and
               spirit. Every experience is crafted with care so you leave feeling
               truly restored.

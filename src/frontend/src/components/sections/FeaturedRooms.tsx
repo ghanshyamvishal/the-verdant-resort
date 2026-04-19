@@ -55,7 +55,7 @@ function WelcomeStrip() {
             >
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                style={{ backgroundColor: "rgba(44,95,46,0.10)" }}
+                style={{ backgroundColor: "rgba(32,51,31,0.10)" }}
               >
                 <Icon size={28} style={{ color: "var(--color-primary)" }} />
               </div>

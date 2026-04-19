@@ -45,10 +45,10 @@ const quickCards = [
   {
     icon: Mail,
     title: "Email Us",
-    info: "hello@verdantresort.com",
+    info: "hello@divyamresorts.com",
     sub: "Response within 4 hours",
     cta: "Send Email",
-    href: "mailto:hello@verdantresort.com",
+    href: "mailto:hello@divyamresorts.com",
     ocid: "contact.email_card",
   },
   {
@@ -93,7 +93,7 @@ export function Contact() {
       >
         <img
           src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1920"
-          alt="Contact The Verdant Resort"
+          alt="Contact Divyam Resorts"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
@@ -102,7 +102,7 @@ export function Contact() {
             className="font-accent text-sm uppercase tracking-widest mb-3"
             style={{ color: "var(--color-secondary)" }}
           >
-            The Verdant Resort
+            Divyam Resorts
           </p>
           <h1 className="font-heading text-5xl md:text-6xl font-bold text-white mb-4">
             Get In Touch
@@ -308,7 +308,7 @@ export function Contact() {
                     data-ocid="contact.success_state"
                     className="flex items-center gap-3 p-4 rounded-xl border"
                     style={{
-                      backgroundColor: "rgba(44, 95, 46, 0.08)",
+                      backgroundColor: "rgba(32, 51, 31, 0.08)",
                       borderColor: "var(--color-primary)",
                     }}
                   >
@@ -368,8 +368,8 @@ export function Contact() {
                   {
                     icon: Mail,
                     label: "Email",
-                    value: "hello@verdantresort.com",
-                    href: "mailto:hello@verdantresort.com",
+                    value: "hello@divyamresorts.com",
+                    href: "mailto:hello@divyamresorts.com",
                   },
                   {
                     icon: MessageCircle,
@@ -381,7 +381,7 @@ export function Contact() {
                   <div key={label} className="flex items-start gap-4">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: "rgba(44, 95, 46, 0.10)" }}
+                      style={{ backgroundColor: "rgba(32, 51, 31, 0.10)" }}
                     >
                       <Icon
                         className="w-5 h-5"
@@ -474,7 +474,7 @@ export function Contact() {
                 allowFullScreen
                 loading="lazy"
                 className="rounded-xl mt-4"
-                title="The Verdant Resort — Nilgiri Hills"
+                title="Divyam Resorts — Nilgiri Hills"
               />
             </div>
           </div>
@@ -517,7 +517,7 @@ export function Contact() {
                 >
                   <div
                     className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
-                    style={{ backgroundColor: "rgba(44, 95, 46, 0.10)" }}
+                    style={{ backgroundColor: "rgba(32, 51, 31, 0.10)" }}
                   >
                     <Icon
                       className="w-7 h-7"

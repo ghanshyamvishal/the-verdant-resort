@@ -28,7 +28,7 @@ export function CTASection() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(28,44,30,0.82) 0%, rgba(0,0,0,0.68) 100%)",
+            "linear-gradient(135deg, rgba(32,51,31,0.84) 0%, rgba(0,0,0,0.68) 100%)",
         }}
       />
 
@@ -51,7 +51,7 @@ export function CTASection() {
           className="font-body text-base md:text-lg mb-10 leading-relaxed"
           style={{ color: "rgba(255,255,255,0.78)" }}
         >
-          Book your stay at The Verdant Resort and discover luxury redefined.
+          Book your stay at Divyam Resorts and discover luxury redefined.
           Immerse yourself in nature's embrace with every comfort at your
           fingertips.
         </p>

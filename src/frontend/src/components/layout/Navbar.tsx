@@ -61,17 +61,16 @@ export function Navbar() {
             <Link
               to="/"
               data-ocid="navbar.logo_link"
-              className="flex items-center gap-2 transition-smooth hover:opacity-80"
+              className="flex items-center gap-2 transition-smooth hover:opacity-85"
             >
-              <span
-                className="font-heading font-bold text-xl md:text-2xl tracking-wide"
+              <img
+                src="/assets/logo.png"
+                alt="Divyam Resorts"
+                className="h-10 md:h-12 w-auto object-contain"
                 style={{
-                  color: isScrolled ? "var(--color-primary)" : "#fff",
-                  textShadow: isScrolled ? "none" : "0 1px 4px rgba(0,0,0,0.4)",
+                  filter: isScrolled ? "none" : "brightness(1.1)",
                 }}
-              >
-                The Verdant Resort
-              </span>
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -155,7 +154,7 @@ export function Navbar() {
                     ? "var(--color-primary)"
                     : "var(--color-text-secondary)",
                   backgroundColor: isActive(link.to)
-                    ? "rgba(44,95,46,0.06)"
+                    ? "rgba(32,51,31,0.06)"
                     : "transparent",
                 }}
               >

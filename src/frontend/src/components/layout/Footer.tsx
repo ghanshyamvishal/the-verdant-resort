@@ -39,18 +39,17 @@ export function Footer() {
           {/* Brand Column */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="inline-block mb-4">
-              <span
-                className="font-heading font-bold text-2xl"
-                style={{ color: "var(--color-secondary)" }}
-              >
-                The Verdant Resort
-              </span>
+              <img
+                src="/assets/logo.png"
+                alt="Divyam Resorts"
+                className="h-12 w-auto object-contain"
+              />
             </Link>
             <p
               className="font-body text-sm leading-relaxed mb-6"
               style={{ color: "rgba(255,255,255,0.6)" }}
             >
-              Nestled in the heart of nature, The Verdant Resort offers an
+              Nestled in the heart of nature, Divyam Resorts offers an
               unparalleled luxury experience where pristine forests meet
               world-class hospitality.
             </p>
@@ -198,11 +197,11 @@ export function Footer() {
                   style={{ color: "var(--color-secondary)" }}
                 />
                 <a
-                  href="mailto:reservations@verdantresort.com"
+                  href="mailto:reservations@divyamresorts.com"
                   className="font-body text-sm transition-smooth hover:opacity-80"
                   style={{ color: "rgba(255,255,255,0.6)" }}
                 >
-                  reservations@verdantresort.com
+                  reservations@divyamresorts.com
                 </a>
               </li>
             </ul>
@@ -218,7 +217,7 @@ export function Footer() {
             className="font-body text-sm"
             style={{ color: "rgba(255,255,255,0.4)" }}
           >
-            © {year} The Verdant Resort. All rights reserved.
+            © {year} Divyam Resorts. All rights reserved.
           </p>
           <p
             className="font-body text-sm"

@@ -12,7 +12,7 @@ const testimonials = [
   },
   {
     quote:
-      "The Verdant Resort redefined luxury for us. Every detail — from the organic toiletries to the impeccable service — spoke of true excellence.",
+      "Divyam Resorts redefined luxury for us. Every detail — from the organic toiletries to the impeccable service — spoke of true excellence.",
     guestName: "James & Sarah Mitchell",
     location: "London, UK",
     rating: 5,
@@ -62,8 +62,8 @@ export function TestimonialsSection() {
             className="font-body text-base max-w-xl mx-auto"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Hear from the guests who have experienced the magic of The Verdant
-            Resort first-hand
+            Hear from the guests who have experienced the magic of Divyam
+            Resorts first-hand
           </p>
         </div>
 
