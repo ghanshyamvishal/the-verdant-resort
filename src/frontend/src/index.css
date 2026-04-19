@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Colors */
+    --color-primary: #2c5f2e;
+    --color-primary-light: #4a8c4d;
+    --color-primary-dark: #1a3d1c;
+    --color-secondary: #d4a853;
+    --color-secondary-light: #e8c97a;
+    --color-secondary-dark: #b8892e;
+    --color-accent: #8b4513;
+
+    /* Backgrounds */
+    --color-bg-primary: #fafaf8;
+    --color-bg-secondary: #f0ede8;
+    --color-bg-dark: #1c1c1c;
+    --color-bg-card: #ffffff;
+
+    /* Text */
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #555555;
+    --color-text-muted: #888888;
+    --color-text-inverse: #ffffff;
+
+    /* Typography */
+    --font-display: "Playfair Display", serif;
+    --font-heading: "Playfair Display", serif;
+    --font-body: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+    --font-accent: "Cormorant Garamond", serif;
+
+    /* Font Sizes */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+
+    /* Spacing & Layout */
+    --spacing-section: 5rem;
+    --border-radius: 0.75rem;
+    --border-radius-lg: 1.5rem;
+
+    /* Shadows */
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.16);
+
+    /* Transitions */
+    --transition: all 0.3s ease;
+
+    /* Shadcn compatibility tokens */
+    --radius: 0.75rem;
+    --background: 0.98 0.01 80;
+    --foreground: 0.2 0.01 250;
+    --card: 1.0 0 0;
+    --card-foreground: 0.2 0.01 250;
+    --popover: 0.98 0.01 80;
+    --popover-foreground: 0.2 0.01 250;
+    --primary: 0.5 0.13 160;
+    --primary-foreground: 0.98 0 0;
+    --secondary: 0.7 0.18 70;
+    --secondary-foreground: 0.15 0 0;
+    --muted: 0.92 0.02 70;
+    --muted-foreground: 0.55 0.01 250;
+    --accent: 0.45 0.13 40;
+    --accent-foreground: 0.98 0 0;
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+    --border: 0.9 0.01 70;
+    --input: 0.95 0.01 70;
+    --ring: 0.5 0.13 160;
+    --chart-1: 0.5 0.13 160;
+    --chart-2: 0.7 0.18 70;
+    --chart-3: 0.45 0.13 40;
+    --chart-4: 0.65 0.12 140;
+    --chart-5: 0.75 0.15 50;
+    --sidebar: 0.15 0.01 250;
+    --sidebar-foreground: 0.98 0 0;
+    --sidebar-primary: 0.7 0.18 70;
+    --sidebar-primary-foreground: 0.15 0.01 250;
+    --sidebar-accent: 0.5 0.13 160;
+    --sidebar-accent-foreground: 0.98 0 0;
+    --sidebar-border: 0.25 0.01 250;
+    --sidebar-ring: 0.7 0.18 70;
+  }
+
+  .dark {
+    --background: 0.12 0.01 250;
+    --foreground: 0.95 0.01 70;
+    --card: 0.18 0.01 250;
+    --card-foreground: 0.92 0.01 70;
+    --popover: 0.2 0.01 250;
+    --popover-foreground: 0.92 0.01 70;
+    --primary: 0.68 0.12 160;
+    --primary-foreground: 0.12 0.01 250;
+    --secondary: 0.75 0.18 70;
+    --secondary-foreground: 0.12 0.01 250;
+    --muted: 0.25 0.01 250;
+    --muted-foreground: 0.68 0.01 70;
+    --accent: 0.62 0.12 40;
+    --accent-foreground: 0.12 0.01 250;
+    --destructive: 0.65 0.19 22;
+    --destructive-foreground: 0.12 0.01 250;
+    --border: 0.28 0.01 250;
+    --input: 0.22 0.01 250;
+    --ring: 0.75 0.18 70;
+    --chart-1: 0.68 0.12 160;
+    --chart-2: 0.75 0.18 70;
+    --chart-3: 0.62 0.12 40;
+    --chart-4: 0.72 0.12 150;
+    --chart-5: 0.78 0.14 60;
+    --sidebar: 0.15 0.01 250;
+    --sidebar-foreground: 0.92 0.01 70;
+    --sidebar-primary: 0.75 0.18 70;
+    --sidebar-primary-foreground: 0.12 0.01 250;
+    --sidebar-accent: 0.68 0.12 160;
+    --sidebar-accent-foreground: 0.92 0.01 70;
+    --sidebar-border: 0.25 0.01 250;
+    --sidebar-ring: 0.75 0.18 70;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    @apply antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition);
+  }
+
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-accent {
+    font-family: var(--font-accent);
+  }
+
+  .text-resort-primary {
+    color: var(--color-primary);
+  }
+
+  .text-resort-secondary {
+    color: var(--color-secondary);
+  }
+
+  .text-resort-accent {
+    color: var(--color-accent);
+  }
+
+  .bg-resort-primary {
+    background-color: var(--color-bg-primary);
+  }
+
+  .bg-resort-secondary {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .bg-resort-dark {
+    background-color: var(--color-bg-dark);
+  }
+
+  .bg-resort-card {
+    background-color: var(--color-bg-card);
+  }
+
+  .shadow-resort-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-resort-hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .section-padding {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce-slow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 2s ease-in-out infinite;
+  }
+
+  .resort-date-input:focus {
+    border-color: var(--color-primary) !important;
+  }
+}

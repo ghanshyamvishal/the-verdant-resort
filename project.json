@@ -1,0 +1,26 @@
+{
+  "overview": "The Verdant Resort is a complete luxury resort website featuring a home page with hero, rooms showcase, amenities, gallery, and testimonials. Includes a rooms listing with filters, individual room detail pages with a sticky booking card, an about page with team and awards, and a contact page with an inquiry form.",
+  "features": [
+    "Centralized CSS variable theme system controlling all colors, fonts, and spacing",
+    "5 full pages: Home, About, Contact, Rooms listing, Room detail",
+    "Sticky navbar with scroll-triggered background and mobile hamburger menu",
+    "Hero section with full viewport image, animated scroll indicator",
+    "Room cards with filter bar and animated transitions",
+    "Sticky booking card with date pickers, guest counter, and price calculator",
+    "Policies accordion on room detail pages",
+    "Gallery section with hover zoom effects",
+    "Testimonials section with dark background",
+    "Fully responsive mobile-first design"
+  ],
+  "category": "travel-hospitality",
+  "tags": [
+    "resort",
+    "hotel",
+    "luxury",
+    "travel",
+    "hospitality",
+    "booking",
+    "responsive"
+  ],
+  "last_updated": "2026-04-19T16:13:03.411Z"
+}
