@@ -97,7 +97,7 @@ export function Rooms() {
       {/* ── FILTER + GRID ─────────────────────────────────────────────── */}
       <section
         data-ocid="rooms.listing.section"
-        className="py-16 px-6"
+        className="py-16 px-4 sm:px-6"
         style={{ backgroundColor: "var(--color-bg-primary)" }}
       >
         <div className="max-w-7xl mx-auto">
@@ -115,19 +115,20 @@ export function Rooms() {
                   aria-pressed={isActive}
                   type="button"
                   onClick={() => handleFilterChange(filter)}
-                  className="px-5 py-2 rounded-full font-body font-medium text-sm transition-all duration-300 border focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  className="px-5 py-2 rounded-full font-body font-medium text-sm transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   style={
                     isActive
                       ? {
                           backgroundColor: "var(--color-primary)",
                           color: "#ffffff",
-                          borderColor: "var(--color-primary)",
-                          boxShadow: "0 4px 12px rgba(32,51,31,0.3)",
+                          border: "2px solid var(--color-primary)",
+                          boxShadow:
+                            "0 4px 0 #1a3517, 0 6px 12px rgba(45,90,39,0.3)",
                         }
                       : {
                           backgroundColor: "var(--color-bg-card)",
                           color: "var(--color-primary)",
-                          borderColor: "var(--color-primary)",
+                          border: "2px solid var(--color-primary)",
                         }
                   }
                 >
@@ -189,11 +190,7 @@ export function Rooms() {
               <button
                 type="button"
                 onClick={() => handleFilterChange("All")}
-                className="px-6 py-2.5 rounded-full font-body font-semibold text-sm transition-all duration-300"
-                style={{
-                  backgroundColor: "var(--color-primary)",
-                  color: "#fff",
-                }}
+                className="btn-3d px-6 py-2.5 text-sm rounded-full"
               >
                 View All Rooms
               </button>
@@ -205,7 +202,7 @@ export function Rooms() {
       {/* ── CTA STRIP ──────────────────────────────────────────────────── */}
       <section
         data-ocid="rooms.cta.section"
-        className="py-14 px-6 text-center"
+        className="py-14 px-4 sm:px-6 text-center"
         style={{ backgroundColor: "var(--color-bg-secondary)" }}
       >
         <p
@@ -231,22 +228,14 @@ export function Rooms() {
           <a
             href="/contact"
             data-ocid="rooms.contact_cta.primary_button"
-            className="inline-block px-8 py-3 rounded-full font-body font-semibold text-sm transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-secondary)",
-              color: "var(--color-text-primary)",
-            }}
+            className="btn-3d-yellow inline-block px-8 py-3 rounded-full text-sm font-bold"
           >
             Contact Concierge
           </a>
           <a
             href="tel:+911800123456"
             data-ocid="rooms.call_cta.secondary_button"
-            className="inline-block px-8 py-3 rounded-full font-body font-semibold text-sm border-2 transition-all duration-300 hover:opacity-80"
-            style={{
-              borderColor: "var(--color-primary)",
-              color: "var(--color-primary)",
-            }}
+            className="btn-3d-outline inline-block px-8 py-3 rounded-full text-sm font-semibold"
           >
             Call +91 1800 123 456
           </a>

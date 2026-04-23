@@ -17,8 +17,12 @@ export function TestimonialCard({
     <article
       className="p-6 rounded-resort-lg relative"
       style={{
-        backgroundColor: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(255,255,255,0.06)",
+        border: "1px solid rgba(242,201,76,0.18)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        boxShadow:
+          "0 2px 4px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.10), 0 20px 40px rgba(0,0,0,0.08)",
       }}
     >
       {/* Decorative quote mark */}
@@ -45,7 +49,7 @@ export function TestimonialCard({
       {/* Quote */}
       <p
         className="font-body text-sm leading-relaxed mb-6 relative z-10"
-        style={{ color: "rgba(255,255,255,0.75)" }}
+        style={{ color: "rgba(255,255,255,0.78)" }}
       >
         "{quote}"
       </p>
@@ -55,7 +59,7 @@ export function TestimonialCard({
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-base shrink-0"
           style={{
-            backgroundColor: "rgba(212,168,83,0.2)",
+            backgroundColor: "rgba(242,201,76,0.2)",
             color: "var(--color-secondary)",
           }}
         >

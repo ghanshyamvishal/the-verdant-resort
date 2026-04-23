@@ -10,17 +10,20 @@ const features = [
   {
     icon: Mountain,
     title: "Mountain Views",
-    desc: "Breathtaking panoramic vistas of the Western Ghats",
+    desc: "Breathtaking panoramic vistas of the Himalayas",
+    delay: 100,
   },
   {
     icon: Leaf,
     title: "Forest Retreat",
     desc: "Surrounded by 50 acres of pristine forest",
+    delay: 300,
   },
   {
     icon: Star,
     title: "5-Star Service",
     desc: "Award-winning hospitality since 1985",
+    delay: 500,
   },
 ];
 
@@ -39,23 +42,21 @@ function WelcomeStrip() {
       style={{ backgroundColor: "var(--color-bg-secondary)" }}
     >
       <div className="max-w-6xl mx-auto px-4">
-        <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          {features.map(({ icon: Icon, title, desc }) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {features.map(({ icon: Icon, title, desc, delay }) => (
             <div
               key={title}
-              className="flex flex-col items-center text-center p-8 rounded-resort-lg transition-smooth hover:scale-[1.02] hover:shadow-resort-hover"
+              className={`card-3d card-shimmer flex flex-col items-center text-center p-8 rounded-resort-lg ${
+                isVisible ? "animate-zoom-in opacity-init" : "opacity-0"
+              }`}
               style={{
-                backgroundColor: "var(--color-bg-card)",
-                boxShadow: "var(--shadow-card)",
+                animationDelay: isVisible ? `${delay}ms` : "0ms",
+                opacity: isVisible ? undefined : 0,
               }}
             >
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                style={{ backgroundColor: "rgba(32,51,31,0.10)" }}
+                className="icon-glow-ring w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-smooth"
+                style={{ backgroundColor: "rgba(45,90,39,0.10)" }}
               >
                 <Icon size={28} style={{ color: "var(--color-primary)" }} />
               </div>
@@ -79,6 +80,43 @@ function WelcomeStrip() {
   );
 }
 
+// Golden divider with center diamond
+function GoldenDivider() {
+  return (
+    <div className="flex items-center justify-center gap-3 my-6">
+      <div
+        className="flex-1 h-px max-w-[120px]"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, var(--color-secondary))",
+        }}
+      />
+      <div
+        className="w-2 h-2 rotate-45"
+        style={{ backgroundColor: "var(--color-secondary)" }}
+      />
+      <div
+        className="w-1.5 h-1.5 rotate-45"
+        style={{
+          backgroundColor: "var(--color-secondary-light)",
+          opacity: 0.7,
+        }}
+      />
+      <div
+        className="w-2 h-2 rotate-45"
+        style={{ backgroundColor: "var(--color-secondary)" }}
+      />
+      <div
+        className="flex-1 h-px max-w-[120px]"
+        style={{
+          background:
+            "linear-gradient(to left, transparent, var(--color-secondary))",
+        }}
+      />
+    </div>
+  );
+}
+
 export function FeaturedRooms() {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(
@@ -99,7 +137,7 @@ export function FeaturedRooms() {
         <div className="max-w-6xl mx-auto px-4">
           {/* Heading */}
           <div
-            className={`text-center mb-12 transition-all duration-700 ${
+            className={`text-center mb-4 transition-all duration-700 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
@@ -107,16 +145,24 @@ export function FeaturedRooms() {
           >
             <span
               className="font-body font-semibold tracking-[0.25em] text-xs uppercase"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: "var(--color-secondary-dark)" }}
             >
               Accommodations
             </span>
-            <h2
-              className="font-heading font-bold text-4xl mt-2 mb-4"
-              style={{ color: "var(--color-text-primary)" }}
+            <div
+              className={`transition-all duration-700 delay-100 ${
+                isVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
+              }`}
             >
-              Our Signature Rooms
-            </h2>
+              <h2
+                className="font-heading font-bold text-4xl mt-2 mb-2"
+                style={{ color: "var(--color-text-primary)" }}
+              >
+                Our Signature Rooms
+              </h2>
+            </div>
             <p
               className="font-body text-base max-w-xl mx-auto"
               style={{ color: "var(--color-text-secondary)" }}
@@ -126,16 +172,25 @@ export function FeaturedRooms() {
             </p>
           </div>
 
-          {/* Room Grid */}
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
+          {/* Golden decorative divider */}
+          <GoldenDivider />
+
+          {/* Room Grid — staggered */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {featuredRooms.map((room, i) => (
-              <RoomCard key={room.slug} room={room} index={i} />
+              <div
+                key={room.slug}
+                className={`transition-all duration-700 ${
+                  isVisible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+                style={{
+                  transitionDelay: isVisible ? `${200 + i * 150}ms` : "0ms",
+                }}
+              >
+                <RoomCard room={room} index={i} />
+              </div>
             ))}
           </div>
 

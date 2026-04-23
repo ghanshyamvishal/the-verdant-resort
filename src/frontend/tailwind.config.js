@@ -51,17 +51,22 @@ export default {
           border: "oklch(var(--sidebar-border))",
           ring: "oklch(var(--sidebar-ring))",
         },
-        /* Resort theme colors */
+
+        /* ── Resort theme colors ──────────────────────────── */
         primary: {
           DEFAULT: "var(--color-primary)",
           light: "var(--color-primary-light)",
           dark: "var(--color-primary-dark)",
+          hover: "var(--color-primary-hover)",
+          active: "var(--color-primary-active)",
           foreground: "oklch(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "var(--color-secondary)",
           light: "var(--color-secondary-light)",
           dark: "var(--color-secondary-dark)",
+          hover: "var(--color-secondary-hover)",
+          active: "var(--color-secondary-active)",
           foreground: "oklch(var(--secondary-foreground))",
         },
         accent: {
@@ -72,6 +77,8 @@ export default {
           DEFAULT: "var(--color-bg-card)",
           foreground: "var(--color-text-primary)",
         },
+
+        /* ── Legacy aliases (backward compat) ─────────────── */
         "bg-primary": "var(--color-bg-primary)",
         "bg-secondary": "var(--color-bg-secondary)",
         "bg-dark": "var(--color-bg-dark)",
@@ -80,7 +87,35 @@ export default {
         "text-secondary": "var(--color-text-secondary)",
         "text-muted": "var(--color-text-muted)",
         "text-inverse": "var(--color-text-inverse)",
+
+        /* ── New canonical color aliases ──────────────────── */
+        "header-bg": "var(--color-header-bg)",
+
+        /* Backgrounds */
+        "color-bg": "var(--color-bg)",
+        "color-bg-alt": "var(--color-bg-alt)",
+        "color-surface": "var(--color-surface)",
+        "color-surface-dark": "var(--color-surface-dark)",
+
+        /* Text */
+        "color-text": "var(--color-text)",
+        "color-muted": "var(--color-muted)",
+        "color-text-inverse": "var(--color-text-inverse)",
+
+        /* Borders */
+        "color-border": "var(--color-border)",
+        "color-border-strong": "var(--color-border-strong)",
+        "color-divider": "var(--color-divider)",
+
+        /* Semantic */
+        "color-success": "var(--color-success)",
+        "color-success-bg": "var(--color-success-bg)",
+        "color-danger": "var(--color-danger)",
+        "color-danger-bg": "var(--color-danger-bg)",
+        "color-warning": "var(--color-warning)",
+        "color-info": "var(--color-info)",
       },
+
       fontFamily: {
         display: ["var(--font-display)", "serif"],
         heading: ["var(--font-heading)", "serif"],
@@ -88,23 +123,55 @@ export default {
         accent: ["var(--font-accent)", "serif"],
         mono: ["var(--font-mono)", "monospace"],
       },
+
       borderRadius: {
+        /* Shadcn tokens */
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        /* Legacy resort tokens */
         resort: "var(--border-radius)",
         "resort-lg": "var(--border-radius-lg)",
+        /* New canonical radius tokens */
+        "radius-sm": "var(--radius-sm)",
+        "radius-md": "var(--radius-md)",
+        "radius-lg": "var(--radius-lg)",
+        "radius-xl": "var(--radius-xl)",
+        "radius-2xl": "var(--radius-2xl)",
+        full: "var(--radius-full)",
       },
+
       boxShadow: {
         xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
         card: "var(--shadow-card)",
         hover: "var(--shadow-hover)",
         elevated: "0 12px 32px rgba(0,0,0,0.12)",
         subtle: "0 1px 4px rgba(0,0,0,0.06)",
+        "3d": "var(--btn-shadow-3d)",
+        "3d-hover": "var(--btn-shadow-3d-hover)",
+        "3d-active": "var(--btn-shadow-3d-active)",
+        /* New semantic shadow tokens */
+        "shadow-sm": "var(--shadow-sm)",
+        "shadow-md": "var(--shadow-md)",
+        "shadow-lg": "var(--shadow-lg)",
+        "shadow-xl": "var(--shadow-xl)",
       },
+
+      spacing: {
+        xs: "var(--spacing-xs)",
+        sm: "var(--spacing-sm)",
+        md: "var(--spacing-md)",
+        lg: "var(--spacing-lg)",
+        xl: "var(--spacing-xl)",
+        "2xl": "var(--spacing-2xl)",
+        "3xl": "var(--spacing-3xl)",
+        section: "var(--spacing-section)",
+      },
+
       transitionDuration: {
         DEFAULT: "300ms",
       },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -131,6 +198,7 @@ export default {
           "50%": { opacity: "0.8" },
         },
       },
+
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",

@@ -26,6 +26,11 @@ const Rooms = lazy(() =>
 const RoomDetail = lazy(() =>
   import("./pages/RoomDetail").then((m) => ({ default: m.RoomDetail })),
 );
+const CheckAvailability = lazy(() =>
+  import("./pages/CheckAvailability").then((m) => ({
+    default: m.CheckAvailability,
+  })),
+);
 
 function PageLoader() {
   return (
@@ -56,6 +61,8 @@ function RootLayout() {
       style={{ backgroundColor: "var(--color-bg-primary)" }}
     >
       <Navbar />
+      {/* Spacer to push content below the fixed navbar (h-16 on mobile, h-20 on md+) */}
+      <div className="h-16 md:h-20 shrink-0" aria-hidden="true" />
       <main className="flex-1">
         <Suspense fallback={<PageLoader />}>
           <Outlet />
@@ -84,11 +91,7 @@ function NotFound() {
       <p style={{ color: "var(--color-text-secondary)" }}>
         The page you're looking for doesn't exist.
       </p>
-      <Link
-        to="/"
-        className="px-6 py-3 rounded-resort font-body font-semibold text-sm transition-smooth hover:opacity-90"
-        style={{ backgroundColor: "var(--color-primary)", color: "#fff" }}
-      >
+      <Link to="/" className="btn-3d px-6 py-3 text-sm">
         Return Home
       </Link>
     </div>
@@ -147,6 +150,16 @@ const roomDetailRoute = createRoute({
   ),
 });
 
+const checkAvailabilityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/check-availability",
+  component: () => (
+    <Suspense fallback={<PageLoader />}>
+      <CheckAvailability />
+    </Suspense>
+  ),
+});
+
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "*",
@@ -159,6 +172,7 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   roomsRoute,
   roomDetailRoute,
+  checkAvailabilityRoute,
   notFoundRoute,
 ]);
 

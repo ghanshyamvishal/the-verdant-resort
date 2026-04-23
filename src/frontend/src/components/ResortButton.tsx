@@ -5,7 +5,7 @@ import {
   forwardRef,
 } from "react";
 
-type ButtonVariant = "filled" | "outline" | "ghost";
+type ButtonVariant = "filled" | "outline" | "ghost" | "yellow";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface BaseButtonProps {
@@ -24,45 +24,22 @@ type ButtonAsAnchor = BaseButtonProps &
 type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-sm",
-  md: "px-6 py-3 text-sm",
-  lg: "px-8 py-4 text-base",
+  sm: "px-4 py-2 text-sm gap-2",
+  md: "px-6 py-3 text-sm gap-2",
+  lg: "px-8 py-4 text-base gap-2.5",
 };
 
-const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
-  filled: {
-    backgroundColor: "var(--color-secondary)",
-    color: "var(--color-text-primary)",
-    border: "2px solid var(--color-secondary)",
-  },
-  outline: {
-    backgroundColor: "transparent",
-    color: "var(--color-primary)",
-    border: "2px solid var(--color-primary)",
-  },
-  ghost: {
-    backgroundColor: "transparent",
-    color: "var(--color-text-secondary)",
-    border: "2px solid transparent",
-  },
+const variantMap: Record<ButtonVariant, string> = {
+  filled: "btn-3d",
+  yellow: "btn-3d-yellow",
+  outline: "btn-3d-outline",
+  ghost: "btn-3d-outline",
 };
 
-const variantHoverStyles: Record<ButtonVariant, React.CSSProperties> = {
-  filled: {
-    backgroundColor: "var(--color-secondary-dark)",
-    borderColor: "var(--color-secondary-dark)",
-  },
-  outline: {
-    backgroundColor: "var(--color-primary)",
-    color: "#fff",
-  },
-  ghost: {
-    backgroundColor: "rgba(0,0,0,0.05)",
-  },
-};
-
-function getBaseClasses(size: ButtonSize) {
-  return `inline-flex items-center justify-center font-body font-semibold rounded-resort transition-smooth hover:scale-105 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ${sizeClasses[size]}`;
+function getBaseClasses(variant: ButtonVariant, size: ButtonSize, extra = "") {
+  return [variantMap[variant], sizeClasses[size], extra]
+    .filter(Boolean)
+    .join(" ");
 }
 
 export const Button = forwardRef<
@@ -77,23 +54,7 @@ export const Button = forwardRef<
     ...rest
   } = props;
 
-  const baseClass = getBaseClasses(size);
-  const style = variantStyles[variant];
-
-  const handleMouseEnter = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
-  ) => {
-    Object.assign(
-      (e.currentTarget as HTMLElement).style,
-      variantHoverStyles[variant],
-    );
-  };
-
-  const handleMouseLeave = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
-  ) => {
-    Object.assign((e.currentTarget as HTMLElement).style, style);
-  };
+  const classes = getBaseClasses(variant, size, className);
 
   if ("href" in rest && rest.href !== undefined) {
     const { href, ...anchorRest } = rest as ButtonAsAnchor;
@@ -101,10 +62,7 @@ export const Button = forwardRef<
       <a
         ref={ref as React.Ref<HTMLAnchorElement>}
         href={href}
-        style={style}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={`${baseClass} ${className}`}
+        className={classes}
         {...anchorRest}
       >
         {children}
@@ -116,10 +74,7 @@ export const Button = forwardRef<
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
-      style={style}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={`${baseClass} ${className}`}
+      className={classes}
       {...buttonRest}
     >
       {children}

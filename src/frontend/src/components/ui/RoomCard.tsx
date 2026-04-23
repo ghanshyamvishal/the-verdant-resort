@@ -39,18 +39,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
   return (
     <article
       data-ocid={`rooms.item.${index + 1}`}
-      className="group rounded-resort-lg overflow-hidden transition-smooth hover:scale-[1.02] cursor-pointer"
-      style={{
-        backgroundColor: "var(--color-bg-card)",
-        boxShadow: "var(--shadow-card)",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow =
-          "var(--shadow-hover)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-card)";
-      }}
+      className="group card-3d card-shimmer rounded-resort-lg overflow-hidden transition-smooth cursor-pointer"
     >
       {/* Image */}
       <div className="relative overflow-hidden h-56">
@@ -76,7 +65,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
                   : "var(--color-primary)",
               color:
                 room.badge === "Best Seller"
-                  ? "var(--color-text-primary)"
+                  ? "var(--color-primary-dark)"
                   : "#fff",
             }}
           >
@@ -97,7 +86,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
           <span
             className="px-2 py-0.5 rounded-full font-body text-xs font-medium shrink-0"
             style={{
-              backgroundColor: "rgba(44,95,46,0.08)",
+              backgroundColor: "rgba(45,90,39,0.08)",
               color: "var(--color-primary)",
             }}
           >
@@ -129,7 +118,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
         {/* Room Meta */}
         <div
           className="flex items-center gap-4 pb-4 mb-4"
-          style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
+          style={{ borderBottom: "1px solid rgba(45,90,39,0.10)" }}
         >
           <div
             className="flex items-center gap-1.5"
@@ -180,11 +169,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
             to="/rooms/$slug"
             params={{ slug: room.slug }}
             data-ocid={`rooms.view_details_button.${index + 1}`}
-            className="px-4 py-2 rounded-resort font-body font-semibold text-sm transition-smooth hover:opacity-90 hover:shadow-md hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-primary)",
-              color: "#fff",
-            }}
+            className="btn-3d px-4 py-2 text-sm"
           >
             View Details
           </Link>

@@ -124,7 +124,6 @@ export function About() {
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
         />
-        {/* Dark gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -189,7 +188,7 @@ export function About() {
           <div className="flex flex-col gap-6">
             <span
               className="text-xs font-body font-semibold tracking-[0.2em] uppercase"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: "var(--color-secondary-dark)" }}
             >
               Our Heritage
             </span>
@@ -295,7 +294,7 @@ export function About() {
               <div
                 key={member.name}
                 data-ocid={`about.team_card.${i + 1}`}
-                className="bg-resort-card rounded-xl p-6 flex flex-col items-center text-center shadow-resort-card transition-smooth hover:scale-105 hover:shadow-resort-hover"
+                className="card-3d bg-resort-card rounded-xl p-6 flex flex-col items-center text-center transition-smooth hover:scale-105"
               >
                 <div
                   className="w-32 h-32 rounded-full overflow-hidden mb-4"
@@ -319,7 +318,7 @@ export function About() {
                 </h3>
                 <span
                   className="font-body text-sm font-medium mb-3"
-                  style={{ color: "var(--color-secondary)" }}
+                  style={{ color: "var(--color-secondary-dark)" }}
                 >
                   {member.role}
                 </span>
@@ -363,7 +362,7 @@ export function About() {
                 <div
                   key={value.title}
                   data-ocid={`about.value_card.${i + 1}`}
-                  className="bg-resort-card rounded-xl p-8 flex flex-col items-center text-center shadow-resort-card transition-smooth hover:shadow-resort-hover hover:scale-105"
+                  className="card-3d bg-resort-card rounded-xl p-8 flex flex-col items-center text-center transition-smooth hover:scale-105"
                 >
                   <div
                     className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
@@ -417,25 +416,24 @@ export function About() {
               <div
                 key={`${award.year}-${award.org}`}
                 data-ocid={`about.award_card.${awardIdx + 1}`}
-                className="bg-resort-card rounded-xl p-6 flex flex-col items-center text-center transition-smooth hover:scale-105 hover:shadow-resort-hover"
+                className="card-3d bg-resort-card rounded-xl p-6 flex flex-col items-center text-center transition-smooth hover:scale-105"
                 style={{
                   border: "1.5px solid var(--color-secondary)",
-                  boxShadow: "var(--shadow-card)",
                 }}
               >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                  style={{ backgroundColor: "rgba(224,177,94,0.12)" }}
+                  style={{ backgroundColor: "rgba(242,201,76,0.12)" }}
                 >
                   <Trophy
                     size={22}
-                    style={{ color: "var(--color-secondary)" }}
+                    style={{ color: "var(--color-secondary-dark)" }}
                     strokeWidth={1.5}
                   />
                 </div>
                 <span
                   className="font-body text-xs font-semibold tracking-widest uppercase mb-1"
-                  style={{ color: "var(--color-secondary)" }}
+                  style={{ color: "var(--color-secondary-dark)" }}
                 >
                   {award.year}
                 </span>

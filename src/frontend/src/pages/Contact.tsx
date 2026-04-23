@@ -1,115 +1,490 @@
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
-import { useState } from "react";
-import { Button } from "../components/ResortButton";
+import { useEffect, useRef, useState } from "react";
 
-interface FormState {
-  name: string;
+/* ─── Types ──────────────────────────────────────────────── */
+interface FormData {
+  fullName: string;
   email: string;
   phone: string;
-  checkin: string;
-  checkout: string;
-  roomType: string;
-  requests: string;
+  subject: string;
+  message: string;
 }
 
-const initialForm: FormState = {
-  name: "",
+interface FormErrors {
+  fullName?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
+
+const initialForm: FormData = {
+  fullName: "",
   email: "",
   phone: "",
-  checkin: "",
-  checkout: "",
-  roomType: "",
-  requests: "",
+  subject: "",
+  message: "",
 };
 
-const roomTypes = [
-  "All Rooms",
-  "Deluxe Forest Room",
-  "Mountain View Suite",
-  "Private Pool Villa",
-  "Family Cottage",
-  "Honeymoon Suite",
-  "Presidential Suite",
-];
+/* ─── Inline SVG Icons ───────────────────────────────────── */
+function PhoneIcon({ size = 24 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+    </svg>
+  );
+}
 
-const quickCards = [
+function MailIcon({ size = 24 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M2 8l10 6 10-6" />
+    </svg>
+  );
+}
+
+function MapPinIcon({ size = 24 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function ClockIcon({ size = 24 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 6v6l4 2" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
+/* Facebook, Instagram, Twitter — brand-style SVGs */
+function FacebookIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+    </svg>
+  );
+}
+
+function TwitterIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+    </svg>
+  );
+}
+
+/* ─── Contact Info Cards Data ────────────────────────────── */
+const infoCards = [
   {
-    icon: Phone,
+    icon: PhoneIcon,
     title: "Call Us",
-    info: "+91 98765 43210",
-    sub: "Available 24/7",
-    cta: "Call Now",
-    href: "tel:+919876543210",
-    ocid: "contact.call_card",
+    primary: "+91 98765 43210",
+    secondary: "+91 11 2345 6789",
+    ocid: "contact.phone_card",
   },
   {
-    icon: Mail,
+    icon: MailIcon,
     title: "Email Us",
-    info: "hello@divyamresorts.com",
-    sub: "Response within 4 hours",
-    cta: "Send Email",
-    href: "mailto:hello@divyamresorts.com",
+    primary: "reservations@divyamresorts.com",
+    secondary: "info@divyamresorts.com",
     ocid: "contact.email_card",
   },
   {
-    icon: MessageCircle,
-    title: "WhatsApp",
-    info: "+91 98765 43210",
-    sub: "Quick chat available",
-    cta: "WhatsApp Us",
-    href: "https://wa.me/919876543210",
-    ocid: "contact.whatsapp_card",
+    icon: MapPinIcon,
+    title: "Find Us",
+    primary: "Rishikesh, Uttarakhand",
+    secondary: "Near Ram Jhula, 249201",
+    ocid: "contact.location_card",
+  },
+  {
+    icon: ClockIcon,
+    title: "Open Hours",
+    primary: "Mon–Sat: 9:00 AM – 8:00 PM",
+    secondary: "Sun: 10:00 AM – 6:00 PM",
+    ocid: "contact.hours_card",
   },
 ];
 
-const inputClass =
-  "w-full border border-gray-300 rounded-md p-3 font-body text-sm transition-smooth focus:outline-none focus:border-primary bg-white";
+/* ─── Validation ──────────────────────────────────────────── */
+function validate(form: FormData): FormErrors {
+  const errors: FormErrors = {};
+  if (!form.fullName.trim()) errors.fullName = "Full name is required.";
+  if (!form.email.trim()) errors.email = "Email address is required.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+    errors.email = "Please enter a valid email address.";
+  if (!form.subject) errors.subject = "Please select a subject.";
+  if (!form.message.trim()) errors.message = "Message cannot be empty.";
+  return errors;
+}
 
+/* ─── Animated Heading with golden line ──────────────────── */
+function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+  center = false,
+}: {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  center?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && lineRef.current) {
+          lineRef.current.classList.add("visible");
+        }
+      },
+      { threshold: 0.3 },
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={`mb-12 ${center ? "text-center" : ""}`}>
+      {eyebrow && (
+        <p
+          className="font-accent text-sm uppercase tracking-widest mb-3"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          {eyebrow}
+        </p>
+      )}
+      <h2
+        className="font-heading text-3xl md:text-4xl font-bold"
+        style={{ color: "var(--color-text-primary)" }}
+      >
+        {title}
+      </h2>
+      <span
+        ref={lineRef}
+        className="heading-line"
+        style={{
+          maxWidth: center ? "80px" : "80px",
+          margin: center ? "0 auto" : "0",
+        }}
+      />
+      {subtitle && (
+        <p
+          className="font-body mt-4 text-base leading-relaxed"
+          style={{
+            color: "var(--color-text-secondary)",
+            maxWidth: "520px",
+            ...(center ? { margin: "1rem auto 0" } : {}),
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ─── Info Card Component ────────────────────────────────── */
+function InfoCard({
+  icon: Icon,
+  title,
+  primary,
+  secondary,
+  ocid,
+  delay,
+}: {
+  icon: React.ComponentType<{ size?: number }>;
+  title: string;
+  primary: string;
+  secondary: string;
+  ocid: string;
+  delay: number;
+}) {
+  return (
+    <div
+      data-ocid={ocid}
+      className="card-3d card-shimmer flex flex-col items-center text-center p-8 rounded-2xl opacity-init fade-in-up"
+      style={{
+        animationDelay: `${delay}ms`,
+        borderRadius: "var(--border-radius-lg)",
+        cursor: "default",
+      }}
+    >
+      {/* Icon badge */}
+      <div
+        className="w-16 h-16 rounded-full flex items-center justify-center mb-5 icon-glow-ring"
+        style={{
+          background:
+            "linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%)",
+          color: "var(--color-primary-dark)",
+          flexShrink: 0,
+        }}
+      >
+        <Icon size={26} />
+      </div>
+
+      <h3
+        className="font-heading text-xl font-bold mb-3"
+        style={{ color: "var(--color-text-primary)" }}
+      >
+        {title}
+      </h3>
+
+      <p
+        className="font-body text-sm font-semibold mb-1 break-words w-full"
+        style={{ color: "var(--color-text-primary)" }}
+      >
+        {primary}
+      </p>
+      <p
+        className="font-body text-sm break-words w-full"
+        style={{ color: "var(--color-text-muted)" }}
+      >
+        {secondary}
+      </p>
+    </div>
+  );
+}
+
+/* ─── Main Contact Page ──────────────────────────────────── */
 export function Contact() {
-  const [form, setForm] = useState<FormState>(initialForm);
+  const [form, setForm] = useState<FormData>(initialForm);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof FormData, boolean>>
+  >({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   function handleChange(
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (touched[name as keyof FormData]) {
+      const updated = { ...form, [name]: value };
+      const newErrors = validate(updated);
+      setErrors((prev) => ({
+        ...prev,
+        [name]: newErrors[name as keyof FormErrors],
+      }));
+    }
   }
 
-  function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleBlur(
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const newErrors = validate(form);
+    setErrors((prev) => ({
+      ...prev,
+      [name]: newErrors[name as keyof FormErrors],
+    }));
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
-    setForm(initialForm);
+    const newErrors = validate(form);
+    setErrors(newErrors);
+    setTouched({ fullName: true, email: true, subject: true, message: true });
+    if (Object.keys(newErrors).length > 0) return;
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+      setForm(initialForm);
+      setTouched({});
+    }, 1200);
+  }
+
+  const inputBase: React.CSSProperties = {
+    backgroundColor: "var(--color-bg-card)",
+    color: "var(--color-text-primary)",
+    fontFamily: "var(--font-body)",
+    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  };
+
+  function fieldClass(hasError: boolean) {
+    return `w-full px-4 py-3 rounded-xl text-sm outline-none transition-smooth ${
+      hasError
+        ? "border-2 border-red-500"
+        : "border border-opacity-20 focus:border-yellow-500 focus:shadow-sm"
+    }`;
   }
 
   return (
     <div className="flex flex-col">
-      {/* SECTION 1 — PAGE HERO */}
+      {/* ── SECTION 1: HERO ──────────────────────────────── */}
       <section
         data-ocid="contact.hero_section"
         className="relative flex items-center justify-center text-center"
-        style={{ minHeight: "350px" }}
+        style={{
+          minHeight: "420px",
+          background:
+            "linear-gradient(135deg, #20331f 0%, var(--color-primary) 60%, #1a3517 100%)",
+        }}
       >
-        <img
-          src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1920"
-          alt="Contact Divyam Resorts"
-          className="absolute inset-0 w-full h-full object-cover"
+        {/* Decorative floating orbs */}
+        <div
+          className="absolute top-8 left-12 w-32 h-32 rounded-full opacity-10 animate-float"
+          style={{
+            background:
+              "radial-gradient(circle, var(--color-secondary), transparent)",
+            filter: "blur(20px)",
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-        <div className="relative z-10 px-4 fade-in-up">
+        <div
+          className="absolute bottom-8 right-16 w-48 h-48 rounded-full opacity-10 animate-float-rev"
+          style={{
+            background:
+              "radial-gradient(circle, var(--color-secondary), transparent)",
+            filter: "blur(28px)",
+          }}
+        />
+
+        <div className="relative z-10 px-6 fade-in-up">
           <p
-            className="font-accent text-sm uppercase tracking-widest mb-3"
+            className="font-accent text-sm uppercase tracking-widest mb-4"
             style={{ color: "var(--color-secondary)" }}
           >
-            Divyam Resorts
+            Divyam Resorts — Rishikesh
           </p>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold text-white mb-4">
+          <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
             Get In Touch
           </h1>
+          {/* Gold accent line */}
+          <div
+            className="mx-auto mb-6 animate-draw-line"
+            style={{
+              width: "80px",
+              height: "3px",
+              borderRadius: "2px",
+              background:
+                "linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light))",
+            }}
+          />
           <p
-            className="font-body text-lg max-w-xl mx-auto"
-            style={{ color: "rgba(255,255,255,0.70)" }}
+            className="font-body text-lg max-w-xl mx-auto leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.75)" }}
           >
             We'd love to hear from you. Reach out for reservations, inquiries,
             or just to say hello.
@@ -117,463 +492,575 @@ export function Contact() {
         </div>
       </section>
 
-      {/* SECTION 2 — CONTACT GRID */}
+      {/* ── SECTION 2: INFO CARDS ────────────────────────── */}
       <section
-        data-ocid="contact.contact_section"
+        data-ocid="contact.info_cards_section"
+        className="section-padding px-4 md:px-8 lg:px-16"
+        style={{ backgroundColor: "var(--color-bg-secondary)" }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <SectionHeading
+            eyebrow="Contact Details"
+            title="How to Reach Us"
+            subtitle="Multiple ways to connect with our team — choose what's most convenient for you."
+            center
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {infoCards.map((card, i) => (
+              <InfoCard
+                key={card.title}
+                icon={card.icon}
+                title={card.title}
+                primary={card.primary}
+                secondary={card.secondary}
+                ocid={card.ocid}
+                delay={i * 100}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 3: FORM + MAP ────────────────────────── */}
+      <section
+        data-ocid="contact.form_section"
         className="section-padding px-4 md:px-8 lg:px-16"
         style={{ backgroundColor: "var(--color-bg-primary)" }}
       >
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-            {/* LEFT — CONTACT FORM */}
-            <div className="flex-1 lg:w-3/5">
-              <h2
-                className="font-heading text-3xl font-semibold mb-8"
-                style={{ color: "var(--color-text-primary)" }}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-start">
+            {/* LEFT: CONTACT FORM CARD */}
+            <div
+              className="card-glass rounded-2xl overflow-hidden animate-slide-in-left opacity-init"
+              style={{ borderRadius: "var(--border-radius-lg)" }}
+            >
+              {/* Card header bar */}
+              <div
+                className="px-8 py-6"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #20331f 0%, var(--color-primary) 100%)",
+                }}
               >
-                Send Us a Message
-              </h2>
+                <h2 className="font-heading text-2xl font-bold text-white mb-1">
+                  Send Us a Message
+                </h2>
+                <p
+                  className="font-body text-sm"
+                  style={{ color: "rgba(255,255,255,0.65)" }}
+                >
+                  We'll respond within 24 hours
+                </p>
+              </div>
 
-              <form className="flex flex-col gap-5" noValidate>
-                {/* Full Name */}
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block font-body text-sm font-semibold mb-1.5"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Full Name{" "}
-                    <span style={{ color: "var(--color-accent)" }}>*</span>
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
-                    className={inputClass}
-                    data-ocid="contact.name_input"
-                  />
-                </div>
-
-                {/* Email + Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block font-body text-sm font-semibold mb-1.5"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Email{" "}
-                      <span style={{ color: "var(--color-accent)" }}>*</span>
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="your@email.com"
-                      className={inputClass}
-                      data-ocid="contact.email_input"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block font-body text-sm font-semibold mb-1.5"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Phone
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={form.phone}
-                      onChange={handleChange}
-                      placeholder="+91 00000 00000"
-                      className={inputClass}
-                      data-ocid="contact.phone_input"
-                    />
-                  </div>
-                </div>
-
-                {/* Check-in + Check-out */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="checkin"
-                      className="block font-body text-sm font-semibold mb-1.5"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Check-in Date
-                    </label>
-                    <input
-                      id="checkin"
-                      name="checkin"
-                      type="date"
-                      value={form.checkin}
-                      onChange={handleChange}
-                      className={inputClass}
-                      data-ocid="contact.checkin_input"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="checkout"
-                      className="block font-body text-sm font-semibold mb-1.5"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Check-out Date
-                    </label>
-                    <input
-                      id="checkout"
-                      name="checkout"
-                      type="date"
-                      value={form.checkout}
-                      onChange={handleChange}
-                      className={inputClass}
-                      data-ocid="contact.checkout_input"
-                    />
-                  </div>
-                </div>
-
-                {/* Room Type */}
-                <div>
-                  <label
-                    htmlFor="roomType"
-                    className="block font-body text-sm font-semibold mb-1.5"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Room Type
-                  </label>
-                  <select
-                    id="roomType"
-                    name="roomType"
-                    value={form.roomType}
-                    onChange={handleChange}
-                    className={inputClass}
-                    data-ocid="contact.roomtype_select"
-                  >
-                    <option value="">Select a room type</option>
-                    {roomTypes.map((rt) => (
-                      <option key={rt} value={rt}>
-                        {rt}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Special Requests */}
-                <div>
-                  <label
-                    htmlFor="requests"
-                    className="block font-body text-sm font-semibold mb-1.5"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Special Requests
-                  </label>
-                  <textarea
-                    id="requests"
-                    name="requests"
-                    rows={4}
-                    value={form.requests}
-                    onChange={handleChange}
-                    placeholder="Any special requirements or questions..."
-                    className={`${inputClass} resize-none`}
-                    data-ocid="contact.requests_textarea"
-                  />
-                </div>
-
-                {/* Submit */}
-                <div>
-                  <Button
-                    variant="filled"
-                    size="lg"
-                    className="w-full"
-                    onClick={handleSubmit}
-                    data-ocid="contact.submit_button"
-                  >
-                    Send Enquiry
-                  </Button>
-                </div>
-
-                {/* Success Message */}
-                {submitted && (
+              <div className="px-8 py-8">
+                {submitted ? (
                   <div
                     data-ocid="contact.success_state"
-                    className="flex items-center gap-3 p-4 rounded-xl border"
-                    style={{
-                      backgroundColor: "rgba(32, 51, 31, 0.08)",
-                      borderColor: "var(--color-primary)",
-                    }}
+                    className="flex flex-col items-center text-center py-10 animate-zoom-in"
                   >
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: "var(--color-primary)" }}
+                      className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%)",
+                        color: "var(--color-primary-dark)",
+                      }}
                     >
-                      <svg
-                        className="w-4 h-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <CheckCircleIcon />
                     </div>
+                    <h3
+                      className="font-heading text-2xl font-bold mb-3"
+                      style={{ color: "var(--color-text-primary)" }}
+                    >
+                      Message Sent!
+                    </h3>
                     <p
-                      className="font-body text-sm font-medium"
-                      style={{ color: "var(--color-primary)" }}
+                      className="font-body text-base mb-6 leading-relaxed"
+                      style={{ color: "var(--color-text-secondary)" }}
                     >
-                      Thank you! We'll get back to you within 24 hours.
+                      Thank you! We'll be in touch shortly.
                     </p>
-                  </div>
-                )}
-              </form>
-            </div>
-
-            {/* RIGHT — CONTACT INFO */}
-            <div className="lg:w-2/5">
-              <h2
-                className="font-heading text-3xl font-semibold mb-8"
-                style={{ color: "var(--color-text-primary)" }}
-              >
-                Contact Information
-              </h2>
-
-              <div className="flex flex-col gap-5 mb-8">
-                {[
-                  {
-                    icon: MapPin,
-                    label: "Address",
-                    value: "Nilgiri Hills, Tamil Nadu 643001, India",
-                    href: undefined,
-                  },
-                  {
-                    icon: Phone,
-                    label: "Phone",
-                    value: "+91 98765 43210",
-                    href: "tel:+919876543210",
-                  },
-                  {
-                    icon: Mail,
-                    label: "Email",
-                    value: "hello@divyamresorts.com",
-                    href: "mailto:hello@divyamresorts.com",
-                  },
-                  {
-                    icon: MessageCircle,
-                    label: "WhatsApp",
-                    value: "+91 98765 43210",
-                    href: "https://wa.me/919876543210",
-                  },
-                ].map(({ icon: Icon, label, value, href }) => (
-                  <div key={label} className="flex items-start gap-4">
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: "rgba(32, 51, 31, 0.10)" }}
+                    <button
+                      type="button"
+                      className="btn-3d px-6 py-2 text-sm"
+                      onClick={() => setSubmitted(false)}
+                      data-ocid="contact.send_another_button"
                     >
-                      <Icon
-                        className="w-5 h-5"
-                        style={{ color: "var(--color-primary)" }}
-                      />
-                    </div>
+                      Send Another Message
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit}
+                    noValidate
+                    className="flex flex-col gap-5"
+                  >
+                    {/* Full Name */}
                     <div>
-                      <p
-                        className="font-body text-xs uppercase tracking-wider font-semibold mb-0.5"
-                        style={{ color: "var(--color-text-muted)" }}
+                      <label
+                        htmlFor="fullName"
+                        className="block font-body text-sm font-semibold mb-1.5"
+                        style={{ color: "var(--color-text-secondary)" }}
                       >
-                        {label}
-                      </p>
-                      {href ? (
-                        <a
-                          href={href}
-                          className="font-body text-sm transition-smooth hover:opacity-70"
-                          style={{ color: "var(--color-text-primary)" }}
-                          target={
-                            href.startsWith("http") ? "_blank" : undefined
-                          }
-                          rel={
-                            href.startsWith("http")
-                              ? "noopener noreferrer"
-                              : undefined
-                          }
-                        >
-                          {value}
-                        </a>
-                      ) : (
+                        Full Name{" "}
+                        <span style={{ color: "var(--color-primary)" }}>*</span>
+                      </label>
+                      <input
+                        id="fullName"
+                        name="fullName"
+                        type="text"
+                        autoComplete="name"
+                        value={form.fullName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="Your full name"
+                        className={fieldClass(!!errors.fullName)}
+                        style={{
+                          ...inputBase,
+                          borderColor: errors.fullName
+                            ? "#ef4444"
+                            : "rgba(45,90,39,0.25)",
+                        }}
+                        data-ocid="contact.name_input"
+                        aria-invalid={!!errors.fullName}
+                        aria-describedby={
+                          errors.fullName ? "err-fullName" : undefined
+                        }
+                      />
+                      {errors.fullName && (
                         <p
-                          className="font-body text-sm"
-                          style={{ color: "var(--color-text-primary)" }}
+                          id="err-fullName"
+                          className="font-body text-xs mt-1"
+                          style={{ color: "#ef4444" }}
+                          data-ocid="contact.name_input.field_error"
                         >
-                          {value}
+                          {errors.fullName}
                         </p>
                       )}
                     </div>
-                  </div>
-                ))}
-              </div>
 
-              {/* Separator */}
-              <div
-                className="w-full h-px mb-8"
-                style={{ backgroundColor: "var(--color-bg-secondary)" }}
-              />
+                    {/* Email + Phone */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block font-body text-sm font-semibold mb-1.5"
+                          style={{ color: "var(--color-text-secondary)" }}
+                        >
+                          Email Address{" "}
+                          <span style={{ color: "var(--color-primary)" }}>
+                            *
+                          </span>
+                        </label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          value={form.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="your@email.com"
+                          className={fieldClass(!!errors.email)}
+                          style={{
+                            ...inputBase,
+                            borderColor: errors.email
+                              ? "#ef4444"
+                              : "rgba(45,90,39,0.25)",
+                          }}
+                          data-ocid="contact.email_input"
+                          aria-invalid={!!errors.email}
+                          aria-describedby={
+                            errors.email ? "err-email" : undefined
+                          }
+                        />
+                        {errors.email && (
+                          <p
+                            id="err-email"
+                            className="font-body text-xs mt-1"
+                            style={{ color: "#ef4444" }}
+                            data-ocid="contact.email_input.field_error"
+                          >
+                            {errors.email}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="phone"
+                          className="block font-body text-sm font-semibold mb-1.5"
+                          style={{ color: "var(--color-text-secondary)" }}
+                        >
+                          Phone Number
+                        </label>
+                        <input
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          autoComplete="tel"
+                          value={form.phone}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="+91 00000 00000"
+                          className={fieldClass(false)}
+                          style={{
+                            ...inputBase,
+                            borderColor: "rgba(45,90,39,0.25)",
+                          }}
+                          data-ocid="contact.phone_input"
+                        />
+                      </div>
+                    </div>
 
-              {/* Opening Hours */}
-              <div className="mb-6">
-                <h3
-                  className="font-heading text-xl font-semibold mb-4"
-                  style={{ color: "var(--color-text-primary)" }}
-                >
-                  Opening Hours
-                </h3>
-                <div className="flex flex-col gap-3">
-                  {[
-                    { label: "Check-in", value: "2:00 PM" },
-                    { label: "Check-out", value: "11:00 AM" },
-                    { label: "Reception", value: "24/7" },
-                  ].map(({ label, value }) => (
-                    <div
-                      key={label}
-                      className="flex justify-between items-center"
-                    >
-                      <span
-                        className="font-body text-sm"
+                    {/* Subject */}
+                    <div>
+                      <label
+                        htmlFor="subject"
+                        className="block font-body text-sm font-semibold mb-1.5"
                         style={{ color: "var(--color-text-secondary)" }}
                       >
-                        {label}
-                      </span>
-                      <span
-                        className="font-body text-sm font-semibold"
-                        style={{ color: "var(--color-primary)" }}
-                      >
-                        {value}
-                      </span>
+                        Subject{" "}
+                        <span style={{ color: "var(--color-primary)" }}>*</span>
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="subject"
+                          name="subject"
+                          value={form.subject}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={`${fieldClass(!!errors.subject)} appearance-none pr-10`}
+                          style={{
+                            ...inputBase,
+                            borderColor: errors.subject
+                              ? "#ef4444"
+                              : "rgba(45,90,39,0.25)",
+                          }}
+                          data-ocid="contact.subject_select"
+                          aria-invalid={!!errors.subject}
+                          aria-describedby={
+                            errors.subject ? "err-subject" : undefined
+                          }
+                        >
+                          <option value="">Select a subject</option>
+                          <option value="General">General Enquiry</option>
+                          <option value="Reservation">Reservation</option>
+                          <option value="Feedback">Feedback</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <span
+                          className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                          style={{ color: "var(--color-text-muted)" }}
+                        >
+                          <ChevronDownIcon />
+                        </span>
+                      </div>
+                      {errors.subject && (
+                        <p
+                          id="err-subject"
+                          className="font-body text-xs mt-1"
+                          style={{ color: "#ef4444" }}
+                          data-ocid="contact.subject_select.field_error"
+                        >
+                          {errors.subject}
+                        </p>
+                      )}
                     </div>
-                  ))}
-                </div>
+
+                    {/* Message */}
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="block font-body text-sm font-semibold mb-1.5"
+                        style={{ color: "var(--color-text-secondary)" }}
+                      >
+                        Message{" "}
+                        <span style={{ color: "var(--color-primary)" }}>*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        value={form.message}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="Tell us how we can help you..."
+                        className={`${fieldClass(!!errors.message)} resize-none`}
+                        style={{
+                          ...inputBase,
+                          borderColor: errors.message
+                            ? "#ef4444"
+                            : "rgba(45,90,39,0.25)",
+                        }}
+                        data-ocid="contact.message_textarea"
+                        aria-invalid={!!errors.message}
+                        aria-describedby={
+                          errors.message ? "err-message" : undefined
+                        }
+                      />
+                      {errors.message && (
+                        <p
+                          id="err-message"
+                          className="font-body text-xs mt-1"
+                          style={{ color: "#ef4444" }}
+                          data-ocid="contact.message_textarea.field_error"
+                        >
+                          {errors.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      className="btn-3d w-full py-4 text-base mt-1"
+                      disabled={submitting}
+                      data-ocid="contact.submit_button"
+                      style={{ opacity: submitting ? 0.8 : 1 }}
+                    >
+                      {submitting ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <svg
+                            className="animate-spin w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              strokeOpacity="0.25"
+                            />
+                            <path d="M12 2a10 10 0 010 20" />
+                          </svg>
+                          Sending…
+                        </span>
+                      ) : (
+                        "Send Message"
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+
+            {/* RIGHT: MAP + INFO CARD */}
+            <div className="flex flex-col gap-6 animate-slide-in-right opacity-init">
+              {/* Map embed card */}
+              <div
+                className="card-3d rounded-2xl overflow-hidden"
+                style={{ borderRadius: "var(--border-radius-lg)" }}
+              >
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.123456789012!2d78.3046!3d30.0869!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3909228fd949a88b%3A0x6c2c3a78a4a5ad62!2sRam%20Jhula%2C%20Rishikesh%2C%20Uttarakhand%20249304!5e0!3m2!1sen!2sin!4v1700000000000"
+                  width="100%"
+                  height="280"
+                  style={{ border: 0, display: "block" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Divyam Resorts — Rishikesh"
+                />
               </div>
 
-              {/* Google Map Embed */}
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.2701569764157!2d76.6913!3d11.4064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDI0JzIzLjAiTiA3NsKwNDEnMjguNiJF!5e0!3m2!1sen!2sin!4v1620000000000"
-                width="100%"
-                height="250"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                className="rounded-xl mt-4"
-                title="Divyam Resorts — Nilgiri Hills"
-              />
+              {/* Resort info / decorative card */}
+              <div
+                className="card-glass rounded-2xl p-8"
+                style={{
+                  borderRadius: "var(--border-radius-lg)",
+                  borderLeft: "4px solid var(--color-secondary)",
+                }}
+              >
+                <p
+                  className="font-accent text-sm uppercase tracking-widest mb-3"
+                  style={{ color: "var(--color-secondary)" }}
+                >
+                  Our Location
+                </p>
+                <h3
+                  className="font-heading text-2xl font-bold mb-4"
+                  style={{ color: "var(--color-text-primary)" }}
+                >
+                  Divyam Resorts, Rishikesh
+                </h3>
+                <p
+                  className="font-body text-sm leading-relaxed mb-6"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Nestled amidst the majestic Himalayas along the holy Ganges,
+                  our resort offers an unparalleled blend of luxury, nature, and
+                  tranquility just steps from Ram Jhula.
+                </p>
+
+                {/* Address block */}
+                <div className="flex items-start gap-3 mb-6">
+                  <span
+                    style={{
+                      color: "var(--color-secondary)",
+                      flexShrink: 0,
+                      marginTop: "2px",
+                    }}
+                  >
+                    <MapPinIcon size={18} />
+                  </span>
+                  <div>
+                    <p
+                      className="font-body text-sm font-semibold"
+                      style={{ color: "var(--color-text-primary)" }}
+                    >
+                      Near Ram Jhula, Rishikesh
+                    </p>
+                    <p
+                      className="font-body text-sm"
+                      style={{ color: "var(--color-text-muted)" }}
+                    >
+                      Uttarakhand 249201, India
+                    </p>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div
+                  className="w-full h-px mb-5"
+                  style={{ backgroundColor: "rgba(45,90,39,0.12)" }}
+                />
+
+                {/* Social icons */}
+                <div>
+                  <p
+                    className="font-body text-xs uppercase tracking-widest font-semibold mb-4"
+                    style={{ color: "var(--color-text-muted)" }}
+                  >
+                    Follow Us
+                  </p>
+                  <div className="flex items-center gap-3">
+                    {[
+                      {
+                        label: "Facebook",
+                        href: "https://facebook.com",
+                        Icon: FacebookIcon,
+                        ocid: "contact.facebook_link",
+                      },
+                      {
+                        label: "Instagram",
+                        href: "https://instagram.com",
+                        Icon: InstagramIcon,
+                        ocid: "contact.instagram_link",
+                      },
+                      {
+                        label: "Twitter",
+                        href: "https://twitter.com",
+                        Icon: TwitterIcon,
+                        ocid: "contact.twitter_link",
+                      },
+                    ].map(({ label, href, Icon, ocid }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={label}
+                        data-ocid={ocid}
+                        className="w-10 h-10 rounded-full flex items-center justify-center transition-smooth"
+                        style={{
+                          backgroundColor: "rgba(45,90,39,0.08)",
+                          color: "var(--color-primary)",
+                          border: "1px solid rgba(45,90,39,0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement;
+                          el.style.backgroundColor = "var(--color-secondary)";
+                          el.style.color = "var(--color-primary-dark)";
+                          el.style.borderColor = "var(--color-secondary)";
+                          el.style.transform = "translateY(-2px)";
+                        }}
+                        onMouseLeave={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement;
+                          el.style.backgroundColor = "rgba(45,90,39,0.08)";
+                          el.style.color = "var(--color-primary)";
+                          el.style.borderColor = "rgba(45,90,39,0.15)";
+                          el.style.transform = "translateY(0)";
+                        }}
+                      >
+                        <Icon />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3 — QUICK CONTACT CARDS */}
+      {/* ── SECTION 4: CTA STRIP ─────────────────────────── */}
       <section
-        data-ocid="contact.quick_cards_section"
-        className="section-padding px-4 md:px-8 lg:px-16"
-        style={{ backgroundColor: "var(--color-bg-secondary)" }}
+        data-ocid="contact.cta_section"
+        className="relative py-20 px-6 text-center overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(135deg, #20331f 0%, var(--color-primary) 50%, #1a3517 100%)",
+        }}
       >
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2
-              className="font-heading text-3xl font-semibold"
-              style={{ color: "var(--color-text-primary)" }}
-            >
-              Reach Us Instantly
-            </h2>
-            <p
-              className="font-body mt-2"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              Choose the channel that works best for you.
-            </p>
-          </div>
+        {/* Decorative orbs */}
+        <div
+          className="absolute left-0 top-0 w-72 h-72 rounded-full opacity-10 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background:
+              "radial-gradient(circle, var(--color-secondary), transparent)",
+            filter: "blur(40px)",
+          }}
+        />
+        <div
+          className="absolute right-0 bottom-0 w-64 h-64 rounded-full opacity-10 translate-x-1/3 translate-y-1/3"
+          style={{
+            background:
+              "radial-gradient(circle, var(--color-secondary), transparent)",
+            filter: "blur(36px)",
+          }}
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {quickCards.map(
-              ({ icon: Icon, title, info, sub, cta, href, ocid }) => (
-                <div
-                  key={title}
-                  data-ocid={ocid}
-                  className="flex flex-col items-center text-center p-8 rounded-xl transition-smooth hover:scale-[1.02] hover:shadow-resort-hover cursor-pointer"
-                  style={{
-                    backgroundColor: "var(--color-bg-card)",
-                    boxShadow: "var(--shadow-card)",
-                  }}
-                >
-                  <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
-                    style={{ backgroundColor: "rgba(32, 51, 31, 0.10)" }}
-                  >
-                    <Icon
-                      className="w-7 h-7"
-                      style={{ color: "var(--color-primary)" }}
-                    />
-                  </div>
-                  <h3
-                    className="font-heading text-xl font-semibold mb-2"
-                    style={{ color: "var(--color-text-primary)" }}
-                  >
-                    {title}
-                  </h3>
-                  <p
-                    className="font-body text-sm font-medium mb-1"
-                    style={{ color: "var(--color-text-primary)" }}
-                  >
-                    {info}
-                  </p>
-                  <p
-                    className="font-body text-sm mb-6"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
-                    {sub}
-                  </p>
-                  <a
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="inline-flex items-center gap-2 font-body text-sm font-semibold transition-smooth hover:underline underline-offset-4"
-                    style={{ color: "var(--color-primary)" }}
-                    data-ocid={`${ocid}.link`}
-                  >
-                    {cta}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              ),
-            )}
-          </div>
+        <div className="relative z-10 max-w-2xl mx-auto fade-in-up">
+          <p
+            className="font-accent text-sm uppercase tracking-widest mb-4"
+            style={{ color: "var(--color-secondary)" }}
+          >
+            Ready for an Escape?
+          </p>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4 leading-snug">
+            Ready for an Unforgettable Stay?
+          </h2>
+          <p
+            className="font-body text-base mb-8 leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.70)" }}
+          >
+            Immerse yourself in the serenity of the Himalayas. Our team is ready
+            to craft the perfect experience just for you.
+          </p>
+          <a
+            href="/check-availability"
+            className="btn-3d-yellow inline-flex items-center gap-2 px-10 py-4 text-base"
+            data-ocid="contact.book_now_button"
+          >
+            Book Now
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
       </section>
     </div>

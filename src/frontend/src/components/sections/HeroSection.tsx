@@ -50,7 +50,7 @@ const SLIDES: Slide[] = [
     heading: "50 Acres of\nPristine Forest",
     subheading:
       "Awaken to bird songs, dine under canopies of stars, and rejuvenate with Ayurvedic spa therapies — all wrapped in nature's most magnificent setting.",
-    ctaPrimary: { label: "Book Your Stay", to: "/contact" },
+    ctaPrimary: { label: "Book Your Stay", to: "/check-availability" },
     ctaSecondary: { label: "Explore Amenities", to: "/about" },
   },
   {
@@ -67,10 +67,70 @@ const SLIDES: Slide[] = [
 
 const AUTOPLAY_INTERVAL = 5000;
 
+// Decorative floating particles for hero overlay
+function HeroParticles() {
+  return (
+    <div
+      className="absolute inset-0 z-[1] pointer-events-none overflow-hidden"
+      aria-hidden="true"
+    >
+      <div
+        className="absolute rounded-full animate-particle"
+        style={{
+          width: 8,
+          height: 8,
+          bottom: "20%",
+          left: "15%",
+          backgroundColor: "rgba(242,201,76,0.6)",
+          animationDelay: "0s",
+          animationDuration: "7s",
+        }}
+      />
+      <div
+        className="absolute rounded-full animate-particle2"
+        style={{
+          width: 12,
+          height: 12,
+          bottom: "30%",
+          left: "35%",
+          backgroundColor: "rgba(255,255,255,0.35)",
+          animationDelay: "1.5s",
+          animationDuration: "9s",
+        }}
+      />
+      <div
+        className="absolute rounded-full animate-particle"
+        style={{
+          width: 6,
+          height: 6,
+          bottom: "25%",
+          right: "22%",
+          backgroundColor: "rgba(242,201,76,0.5)",
+          animationDelay: "3s",
+          animationDuration: "8s",
+        }}
+      />
+      <div
+        className="absolute rounded-full animate-particle2"
+        style={{
+          width: 10,
+          height: 10,
+          bottom: "15%",
+          right: "40%",
+          backgroundColor: "rgba(255,255,255,0.25)",
+          animationDelay: "0.8s",
+          animationDuration: "10s",
+        }}
+      />
+    </div>
+  );
+}
+
 export function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [contentKey, setContentKey] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const goTo = useCallback(
@@ -79,6 +139,7 @@ export function HeroSection() {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex(index);
+        setContentKey((k) => k + 1);
         setIsTransitioning(false);
       }, 500);
     },
@@ -115,7 +176,7 @@ export function HeroSection() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Slide backgrounds — crossfade via opacity */}
+      {/* Slide backgrounds — background images only, no animation here */}
       {SLIDES.map((s, i) => (
         <div
           key={s.image}
@@ -129,66 +190,102 @@ export function HeroSection() {
             className="w-full h-full object-cover"
             loading={i === 0 ? "eager" : "lazy"}
           />
-          {/* Dark gradient overlay */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.28) 50%, rgba(0,0,0,0.68) 100%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.28) 50%, rgba(0,0,0,0.72) 100%)",
             }}
           />
         </div>
       ))}
 
-      {/* Content */}
+      {/* Floating particles */}
+      <HeroParticles />
+
+      {/* ── Hero Overlay Content — re-keyed on slide change, bobbing float animation ── */}
       <div
-        className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto"
+        key={contentKey}
+        className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto animate-hero-float"
         style={{
           opacity: isTransitioning ? 0 : 1,
-          transform: isTransitioning ? "translateY(12px)" : "translateY(0)",
-          transition: "opacity 0.5s ease, transform 0.5s ease",
+          transition: "opacity 0.5s ease",
         }}
       >
         {/* Tag line */}
         <span
-          className="font-body font-semibold tracking-[0.3em] text-xs uppercase mb-6 px-4 py-1.5 rounded-full"
+          className="font-body font-semibold tracking-[0.3em] text-xs uppercase mb-6 px-4 py-1.5 rounded-full opacity-init"
           style={{
             color: "var(--color-secondary)",
-            border: "1px solid rgba(224,177,94,0.4)",
-            backgroundColor: "rgba(224,177,94,0.08)",
+            border: "1px solid rgba(242,201,76,0.4)",
+            backgroundColor: "rgba(242,201,76,0.08)",
+            animation: "fadeInDown 0.6s ease-out 0.1s forwards",
           }}
         >
           {slide.tag}
         </span>
 
         {/* Headline */}
-        <h1 className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6 whitespace-pre-line">
+        <h1
+          className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-4 whitespace-pre-line"
+          style={{
+            opacity: 0,
+            animation: "fadeInUp 0.65s ease-out 0.25s forwards",
+            textShadow: "0 2px 20px rgba(0,0,0,0.4)",
+          }}
+        >
           {slide.heading}
         </h1>
+
+        {/* Animated golden divider */}
+        <div
+          className="mb-5"
+          style={{
+            width: "80px",
+            height: "2px",
+            background:
+              "linear-gradient(90deg, transparent, var(--color-secondary), transparent)",
+            opacity: 0,
+            transformOrigin: "center",
+            animation:
+              "drawLine 0.6s ease-out 0.5s forwards, fadeInUp 0.5s ease-out 0.5s forwards",
+          }}
+        />
 
         {/* Subtext */}
         <p
           className="font-body text-base md:text-lg leading-relaxed max-w-2xl mb-10"
-          style={{ color: "rgba(255,255,255,0.80)" }}
+          style={{
+            color: "rgba(255,255,255,0.80)",
+            opacity: 0,
+            animation: "fadeInUp 0.65s ease-out 0.45s forwards",
+          }}
         >
           {slide.subheading}
         </p>
 
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div
+          className="flex flex-col sm:flex-row gap-4"
+          style={{
+            opacity: 0,
+            animation: "fadeInUp 0.65s ease-out 0.6s forwards",
+          }}
+        >
           <Link to={slide.ctaPrimary.to} data-ocid="hero.explore_rooms_button">
-            <Button variant="filled" size="lg">
+            <Button variant="yellow" size="lg">
               {slide.ctaPrimary.label}
             </Button>
           </Link>
           <Link to={slide.ctaSecondary.to} data-ocid="hero.our_story_button">
             <button
               type="button"
-              className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 text-base rounded-resort transition-smooth hover:scale-105 hover:shadow-md"
+              className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 text-base rounded-resort transition-smooth"
               style={{
                 backgroundColor: "transparent",
                 color: "white",
                 border: "2px solid rgba(255,255,255,0.7)",
+                minHeight: "48px",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.backgroundColor =
@@ -223,7 +320,7 @@ export function HeroSection() {
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.backgroundColor =
-            "rgba(224,177,94,0.7)";
+            "rgba(242,201,76,0.7)";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.backgroundColor =
@@ -247,7 +344,7 @@ export function HeroSection() {
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.backgroundColor =
-            "rgba(224,177,94,0.7)";
+            "rgba(242,201,76,0.7)";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.backgroundColor =

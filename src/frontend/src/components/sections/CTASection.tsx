@@ -13,8 +13,8 @@ export function CTASection() {
     <section
       ref={ref}
       data-ocid="cta.section"
-      className="relative flex items-center justify-center overflow-hidden min-h-[420px]"
-      style={{ minHeight: "420px" }}
+      className="relative flex items-center justify-center overflow-hidden"
+      style={{ minHeight: "460px" }}
     >
       {/* Background image */}
       <img
@@ -23,13 +23,25 @@ export function CTASection() {
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Overlay */}
+      {/* Animated gradient overlay */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 animate-gradient"
         style={{
           background:
-            "linear-gradient(135deg, rgba(32,51,31,0.84) 0%, rgba(0,0,0,0.68) 100%)",
+            "linear-gradient(135deg, rgba(45,90,39,0.88) 0%, rgba(0,0,0,0.72) 50%, rgba(45,90,39,0.80) 100%)",
+          backgroundSize: "200% 200%",
         }}
+      />
+
+      {/* Pulsing radial center glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(242,201,76,0.12) 0%, transparent 65%)",
+          animation: "gradientShift 5s ease infinite",
+        }}
+        aria-hidden="true"
       />
 
       {/* Content */}
@@ -44,7 +56,10 @@ export function CTASection() {
         >
           Begin Your Journey
         </span>
-        <h2 className="font-heading font-bold text-4xl lg:text-5xl text-white mb-5 leading-tight">
+        <h2
+          className="font-heading font-bold text-4xl lg:text-5xl text-white mb-5 leading-tight"
+          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.4)" }}
+        >
           Ready for an Unforgettable Experience?
         </h2>
         <p
@@ -55,15 +70,40 @@ export function CTASection() {
           Immerse yourself in nature's embrace with every comfort at your
           fingertips.
         </p>
-        <Link to="/rooms" data-ocid="cta.book_stay_button">
-          <Button
-            variant="filled"
-            size="lg"
-            className="shadow-lg hover:shadow-xl"
-          >
-            Book Your Stay
-          </Button>
-        </Link>
+
+        {/* CTA buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/check-availability" data-ocid="cta.book_stay_button">
+            <Button variant="yellow" size="lg" className="shadow-lg">
+              Check Availability
+            </Button>
+          </Link>
+          <Link to="/rooms" data-ocid="cta.view_rooms_button">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 text-base rounded-resort transition-smooth"
+              style={{
+                backgroundColor: "transparent",
+                color: "white",
+                border: "2px solid rgba(255,255,255,0.6)",
+                minHeight: "48px",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "rgba(255,255,255,0.12)";
+                (e.currentTarget as HTMLElement).style.borderColor = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "transparent";
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(255,255,255,0.6)";
+              }}
+            >
+              Explore Rooms
+            </button>
+          </Link>
+        </div>
       </div>
     </section>
   );
